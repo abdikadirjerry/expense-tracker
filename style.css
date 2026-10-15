@@ -26,3 +26,54 @@ h1 {
     color: #333;
     margin-bottom: 20px;
 }
+
+h4 {
+    margin: 0;
+    text-transform: uppercase;
+    font-size: 14px;
+    color: #777;
+}
+
+.balance-container {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.balance-container h2 {
+    font-size: 28px;
+    color: #222;
+    margin-top: 5px;
+}
+
+.inc-exp-container {
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.inc-exp-container > div {
+    flex: 1;
+}
+
+.inc-exp-container > div:first-of-type {
+    border-right: 1px solid #dedede;
+}
+
+.money {
+    font-size: 18px;
+    letter-spacing: 1px;
+    margin-top: 5px;
+}
+
+.money.plus {
+    color: #2ecc71;
+}
+
+.money.minus {
+    color: #c0392b;
+}
