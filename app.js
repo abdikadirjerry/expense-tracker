@@ -6,7 +6,9 @@ const form = document.getElementById('form');
 const text = document.getElementById('text');
 const amount = document.getElementById('amount');
 
-let transactions = [];
+const localStorageTransactions = JSON.parse(localStorage.getItem('transactions'));
+
+let transactions = localStorage.getItem('transactions') !== null ? localStorageTransactions : [];
 
 // Add transaction
 function addTransaction(e) {
@@ -27,6 +29,7 @@ function addTransaction(e) {
 
     addTransactionDOM(transaction);
     updateValues();
+    updateLocalStorage();
 
     text.value = '';
     amount.value = '';
@@ -55,7 +58,13 @@ function addTransactionDOM(transaction) {
 // Remove transaction by ID
 function removeTransaction(id) {
     transactions = transactions.filter(transaction => transaction.id !== id);
+    updateLocalStorage();
     init();
+}
+
+// Update local storage transactions
+function updateLocalStorage() {
+    localStorage.setItem('transactions', JSON.stringify(transactions));
 }
 
 // Update the balance, income and expense
