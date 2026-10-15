@@ -1,172 +1,211 @@
+/* --- CSS Variables & Reset --- */
+:root {
+  --primary-color: #9c88ff;
+  --primary-hover: #846ef4;
+  --success-color: #2ecc71;
+  --danger-color: #e74c3c;
+  --bg-color: #f4f7f6;
+  --card-bg: #fff;
+  --text-main: #333;
+  --text-muted: #777;
+  --border-color: #dedede;
+  --shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
-    background-color: #f4f7f6;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+  background-color: var(--bg-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
 }
 
+/* --- Layout Container --- */
 .container {
-    width: 400px;
-    background: #fff;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  width: 400px;
+  background: var(--card-bg);
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: var(--shadow);
 }
 
 h1 {
-    text-align: center;
-    color: #333;
-    margin-bottom: 20px;
+  text-align: center;
+  color: var(--text-main);
+  margin-bottom: 20px;
+  font-size: 24px;
 }
 
 h3 {
-    border-bottom: 1px solid #bbb;
-    padding-bottom: 5px;
-    margin-bottom: 15px;
-    color: #333;
-    font-size: 16px;
+  border-bottom: 1px solid #bbb;
+  padding-bottom: 5px;
+  margin-bottom: 15px;
+  color: var(--text-main);
+  font-size: 16px;
 }
 
-h4 {
-    margin: 0;
-    text-transform: uppercase;
-    font-size: 14px;
-    color: #777;
-}
-
+/* --- Balance & Summary Cards --- */
 .balance-container {
-    text-align: center;
-    margin-bottom: 20px;
+  text-align: center;
+  margin-bottom: 20px;
 }
 
 .balance-container h2 {
-    font-size: 28px;
-    color: #222;
-    margin-top: 5px;
+  margin: 0;
+  text-transform: uppercase;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+#balance {
+  font-size: 28px;
+  color: var(--text-main);
+  margin-top: 5px;
+  font-weight: bold;
+  display: block;
 }
 
 .inc-exp-container {
-    background-color: #fff;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-    border-radius: 5px;
-    text-align: center;
+  background-color: var(--card-bg);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  text-align: center;
 }
 
 .inc-exp-container > div {
-    flex: 1;
+  flex: 1;
 }
 
 .inc-exp-container > div:first-of-type {
-    border-right: 1px solid #dedede;
+  border-right: 1px solid var(--border-color);
+}
+
+.inc-exp-container h3 {
+  border: none;
+  margin: 0;
+  font-size: 14px;
+  color: var(--text-muted);
+  text-transform: uppercase;
 }
 
 .money {
-    font-size: 18px;
-    letter-spacing: 1px;
-    margin-top: 5px;
+  font-size: 18px;
+  letter-spacing: 1px;
+  margin-top: 5px;
+  display: block;
+  font-weight: 600;
 }
 
 .money.plus {
-    color: #2ecc71;
+  color: var(--success-color);
 }
 
 .money.minus {
-    color: #c0392b;
+  color: var(--danger-color);
 }
 
+/* --- Transaction List --- */
 .list {
-    list-style-type: none;
-    margin-bottom: 30px;
-    max-height: 150px;
-    overflow-y: auto;
+  list-style-type: none;
+  margin-bottom: 30px;
+  max-height: 160px;
+  overflow-y: auto;
 }
 
 .list li {
-    background-color: #fff;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    color: #333;
-    display: flex;
-    justify-content: space-between;
-    position: relative;
-    padding: 10px;
-    margin: 10px 0;
-    border-radius: 4px;
-    border-right: 5px solid #2ecc71;
+  background-color: var(--card-bg);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  color: var(--text-main);
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 4px;
+  border-right: 5px solid var(--success-color);
 }
 
 .list li.minus {
-    border-right-color: #c0392b;
+  border-right-color: var(--danger-color);
 }
 
 .delete-btn {
-    cursor: pointer;
-    background-color: #e74c3c;
-    border: 0;
-    color: #fff;
-    font-size: 14px;
-    line-height: 20px;
-    padding: 2px 5px;
-    position: absolute;
-    top: 50%;
-    left: 0;
-    transform: translate(-100%, -50%);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    border-radius: 3px 0 0 3px;
+  cursor: pointer;
+  background-color: var(--danger-color);
+  border: 0;
+  color: #fff;
+  font-size: 14px;
+  line-height: 20px;
+  padding: 2px 6px;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translate(-100%, -50%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  border-radius: 3px 0 0 3px;
 }
 
 .list li:hover .delete-btn {
-    opacity: 1;
+  opacity: 1;
 }
 
+/* --- Form Inputs & Buttons --- */
 label {
-    display: inline-block;
-    margin: 10px 0 5px;
-    color: #555;
-    font-size: 14px;
+  display: inline-block;
+  margin: 10px 0 5px;
+  color: #555;
+  font-size: 14px;
 }
 
-input[type='text'],
-input[type='number'] {
-    border: 1px solid #dedede;
-    border-radius: 4px;
-    display: block;
-    font-size: 16px;
-    padding: 10px;
-    width: 100%;
+input[type="text"],
+input[type="number"] {
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  display: block;
+  font-size: 16px;
+  padding: 10px;
+  width: 100%;
+  transition: border-color 0.2s;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus {
+  outline: none;
+  border-color: var(--primary-color);
 }
 
 .btn {
-    cursor: pointer;
-    background-color: #9c88ff;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    color: #fff;
-    border: 0;
-    display: block;
-    font-size: 16px;
-    margin-top: 20px;
-    padding: 10px;
-    width: 100%;
-    border-radius: 4px;
-    transition: background-color 0.2s ease;
+  cursor: pointer;
+  background-color: var(--primary-color);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  color: #fff;
+  border: 0;
+  display: block;
+  font-size: 16px;
+  margin-top: 20px;
+  padding: 10px;
+  width: 100%;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
 }
 
-.btn:focus, .delete-btn:focus {
-    outline: none;
+.btn:focus,
+.delete-btn:focus {
+  outline: none;
 }
 
 .btn:hover {
-    background-color: #846ef4;
+  background-color: var(--primary-hover);
 }

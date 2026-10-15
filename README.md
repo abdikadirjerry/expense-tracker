@@ -1,6 +1,6 @@
 # Vanilla JS Expense Tracker
 
-A clean, responsive, feature-complete Expense Tracker web application built from scratch using Vanilla JavaScript (ES6+), HTML5, and CSS3. 
+A clean, responsive, feature-complete Expense Tracker web application built from scratch using Vanilla JavaScript (ES6+), HTML5, and CSS3.
 
 ---
 
@@ -21,3 +21,13 @@ vanilla-js-expense-tracker/
 ├── index.html     # Main markup structure
 ├── style.css      # Styling, layout, and hover effects
 └── app.js         # Application state, DOM manipulation, and logic
+
+Getting Started
+To run this project locally, follow these simple steps:
+
+Clone or download this repository.
+
+Open the project folder in your code editor (e.g., VS Code).
+
+Open index.html directly in your web browser, or use a live server extension (like Live Server in VS Code).
+```

@@ -1,99 +1,142 @@
-const balance = document.getElementById('balance');
-const moneyPlus = document.getElementById('money-plus');
-const moneyMinus = document.getElementById('money-minus');
-const list = document.getElementById('list');
-const form = document.getElementById('form');
-const text = document.getElementById('text');
-const amount = document.getElementById('amount');
+// DOM Element References
+const balanceEl = document.getElementById("balance");
+const moneyPlusEl = document.getElementById("money-plus");
+const moneyMinusEl = document.getElementById("money-minus");
+const listEl = document.getElementById("list");
+const formEl = document.getElementById("form");
+const textInput = document.getElementById("text");
+const amountInput = document.getElementById("amount");
 
-const localStorageTransactions = JSON.parse(localStorage.getItem('transactions'));
+// Retrieve transactions from LocalStorage or initialize empty array
+const STORAGE_KEY = "expense_tracker_transactions";
+let transactions = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
 
-let transactions = localStorage.getItem('transactions') !== null ? localStorageTransactions : [];
+/**
+ * Handle form submission to add a new transaction
+ */
+function handleFormSubmit(e) {
+  e.preventDefault();
 
-// Add transaction
-function addTransaction(e) {
-    e.preventDefault();
+  const description = textInput.value.trim();
+  const amountVal = amountInput.value.trim();
 
-    if (text.value.trim() === '' || amount.value.trim() === '') {
-        alert('Please add a text and amount');
-        return;
-    }
+  if (!description || !amountVal) {
+    alert("Please provide both a description and a valid amount.");
+    return;
+  }
 
-    const transaction = {
-        id: generateID(),
-        text: text.value,
-        amount: +amount.value
-    };
+  const newTransaction = {
+    id: generateUniqueId(),
+    text: description,
+    amount: parseFloat(amountVal),
+  };
 
-    transactions.push(transaction);
+  transactions.push(newTransaction);
 
-    addTransactionDOM(transaction);
-    updateValues();
-    updateLocalStorage();
-
-    text.value = '';
-    amount.value = '';
+  syncAndRefresh();
+  resetForm();
 }
 
-// Generate random ID
-function generateID() {
-    return Math.floor(Math.random() * 100000000);
+/**
+ * Generate a unique numeric ID using timestamp and random fallback
+ */
+function generateUniqueId() {
+  return Date.now() + Math.floor(Math.random() * 1000);
 }
 
-// Add transaction to DOM list
+/**
+ * Render a single transaction item into the DOM list
+ */
 function addTransactionDOM(transaction) {
-    const sign = transaction.amount < 0 ? '-' : '+';
-    const item = document.createElement('li');
+  const sign = transaction.amount < 0 ? "-" : "+";
+  const absAmount = Math.abs(transaction.amount).toFixed(2);
+  const cssClass = transaction.amount < 0 ? "minus" : "plus";
 
-    item.classList.add(transaction.amount < 0 ? 'minus' : 'plus');
+  const listItem = document.createElement("li");
+  listItem.classList.add(cssClass);
 
-    item.innerHTML = `
-        ${transaction.text} <span>${sign}$${Math.abs(transaction.amount)}</span>
-        <button class="delete-btn" onclick="removeTransaction(${transaction.id})">x</button>
+  listItem.innerHTML = `
+        ${escapeHTML(transaction.text)} 
+        <span>${sign}$${absAmount}</span>
+        <button class="delete-btn" aria-label="Delete transaction" onclick="removeTransaction(${transaction.id})">x</button>
     `;
 
-    list.appendChild(item);
+  listEl.appendChild(listItem);
 }
 
-// Remove transaction by ID
+/**
+ * Basic HTML sanitizer to prevent injection via list text
+ */
+function escapeHTML(str) {
+  return str.replace(
+    /[&<>'"]/g,
+    (tag) =>
+      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" })[
+        tag
+      ] || tag,
+  );
+}
+
+/**
+ * Remove a specific transaction by its ID
+ */
 function removeTransaction(id) {
-    transactions = transactions.filter(transaction => transaction.id !== id);
-    updateLocalStorage();
-    init();
+  transactions = transactions.filter((transaction) => transaction.id !== id);
+  syncAndRefresh();
 }
 
-// Update local storage transactions
-function updateLocalStorage() {
-    localStorage.setItem('transactions', JSON.stringify(transactions));
-}
-
-// Update the balance, income and expense
+/**
+ * Update financial summary figures (Balance, Income, Expense)
+ */
 function updateValues() {
-    const amounts = transactions.map(transaction => transaction.amount);
+  const amounts = transactions.map((t) => t.amount);
 
-    const total = amounts.reduce((acc, item) => (acc += item), 0).toFixed(2);
+  const total = amounts.reduce((acc, item) => acc + item, 0).toFixed(2);
 
-    const income = amounts
-        .filter(item => item > 0)
-        .reduce((acc, item) => (acc += item), 0)
-        .toFixed(2);
+  const income = amounts
+    .filter((item) => item > 0)
+    .reduce((acc, item) => acc + item, 0)
+    .toFixed(2);
 
-    const expense = (
-        amounts.filter(item => item < 0).reduce((acc, item) => (acc += item), 0) * -1
-    ).toFixed(2);
+  const expense = (
+    amounts.filter((item) => item < 0).reduce((acc, item) => acc + item, 0) * -1
+  ).toFixed(2);
 
-    balance.innerText = `$${total}`;
-    moneyPlus.innerText = `+$${income}`;
-    moneyMinus.innerText = `-$${expense}`;
+  balanceEl.innerText = `$${total}`;
+  moneyPlusEl.innerText = `+$${income}`;
+  moneyMinusEl.innerText = `-$${expense}`;
 }
 
-// Init app
+/**
+ * Save current state to LocalStorage
+ */
+function updateLocalStorage() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(transactions));
+}
+
+/**
+ * Reset form input fields
+ */
+function resetForm() {
+  textInput.value = "";
+  amountInput.value = "";
+  textInput.focus();
+}
+
+/**
+ * Synchronize storage, redraw UI elements, and update calculations
+ */
+function syncAndRefresh() {
+  listEl.innerHTML = "";
+  transactions.forEach(addTransactionDOM);
+  updateValues();
+  updateLocalStorage();
+}
+
+// Initialize application on load
 function init() {
-    list.innerHTML = '';
-    transactions.forEach(addTransactionDOM);
-    updateValues();
+  syncAndRefresh();
+  formEl.addEventListener("submit", handleFormSubmit);
 }
 
 init();
-
-form.addEventListener('submit', addTransaction);
